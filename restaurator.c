@@ -152,6 +152,19 @@ int main() {
       double timeDiff = nowTime - preTime;
       preTime = nowTime;
 
+      //確認是否暫停
+      if(IsKeyPressed(KEY_P)) {
+        int option = PauseScreen(hero);
+
+        if(option == 0) {
+          continue;
+        }
+        else if(option == 1) {
+          isExit = true;
+          break;
+        }
+      }
+
       //測試用時的程式
       if(IsKeyPressed(KEY_W)) {
         isHeroWin = true;

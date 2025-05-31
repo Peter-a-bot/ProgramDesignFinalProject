@@ -2,8 +2,10 @@
 #include <stdio.h>
 #include <raylib.h>
 #include <math.h>
+#include "hero.h"
 
 #define MAX_PASSIVES 3
+#define MAX_WEAPONS 6
 
 int WeaponSelectionInterfece() {
 
@@ -693,4 +695,124 @@ int MapSelectionInterface() {
     }
 
     return selectedMap;
+}
+
+
+int PauseScreen(Hero *hero) {
+    // 定義常量
+    const char *titleText = "Game Paused";
+    const char *buttonNames[] = {"Continue", "Quit", "Toggle Sort"};
+    const int numButtons = 3;
+    const int buttonWidth = 200;
+    const int buttonHeight = 60;
+    const int buttonPadding = 20;
+    const int fontSizeTitle = 30;
+    const int fontSizeText = 20;
+    const int verticalPadding = 20;
+
+    // 定義介面的顏色
+    Color backgroundColor = BLACK;
+    Color buttonNormalColor = MAROON;
+    Color buttonHoveredColor = RED;
+    Color buttonBorderColor = RED;
+    Color buttonTextColor = WHITE;
+    Color titleColor = RED;
+    Color weaponTextColor = YELLOW;
+
+    // 獲取當前窗口尺寸
+    int screenWidth = GetScreenWidth();
+    int screenHeight = GetScreenHeight();
+
+    // 計算 UI 總高度（標題 + 武器列表 + 按鈕）
+    int maxWeapons = hero->weaponCount > MAX_WEAPONS ? MAX_WEAPONS : hero->weaponCount;
+    int totalHeight = fontSizeTitle + verticalPadding + (maxWeapons * (fontSizeText + verticalPadding)) + (numButtons * buttonHeight + (numButtons - 1) * buttonPadding);
+    int startingY = (screenHeight - totalHeight) / 2;
+
+    // 定義按鈕矩形
+    Rectangle buttons[3];
+    for (int i = 0; i < numButtons; i++) {
+        float x = (screenWidth - buttonWidth) / 2.0f;
+        float y = startingY + fontSizeTitle + verticalPadding + (maxWeapons * (fontSizeText + verticalPadding)) + i * (buttonHeight + buttonPadding);
+        buttons[i] = (Rectangle){x, y, buttonWidth, buttonHeight};
+    }
+
+    int hoveredButton = -1;
+    int selectedOption = -1; // -1: 未選擇, 0: 繼續, 1: 退出, 2: 切換排序
+    bool sortAscending = true; // 初始排序為由小到大
+    float time = 0.0f;
+
+    // 創建排序後的武器索引數組
+    int weaponIndices[MAX_WEAPONS];
+    for (int i = 0; i < maxWeapons; i++) {
+        weaponIndices[i] = i;
+    }
+
+    // 主循環
+    while (!WindowShouldClose() && selectedOption == -1) {
+        time += GetFrameTime();
+        Vector2 mousePoint = GetMousePosition();
+        hoveredButton = -1;
+
+        // 檢查鼠標互動
+        for (int i = 0; i < numButtons; i++) {
+            if (CheckCollisionPointRec(mousePoint, buttons[i])) {
+                hoveredButton = i;
+                if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+                    if (i == 2) {
+                        // 切換排序方式
+                        sortAscending = !sortAscending;
+                        // 簡單的冒泡排序
+                        for (int j = 0; j < maxWeapons - 1; j++) {
+                            for (int k = 0; k < maxWeapons - j - 1; k++) {
+                                int power1 = hero->weapons[weaponIndices[k]]->attackPower;
+                                int power2 = hero->weapons[weaponIndices[k + 1]]->attackPower;
+                                if ((sortAscending && power1 > power2) || (!sortAscending && power1 < power2)) {
+                                    int temp = weaponIndices[k];
+                                    weaponIndices[k] = weaponIndices[k + 1];
+                                    weaponIndices[k + 1] = temp;
+                                }
+                            }
+                        }
+                    } else {
+                        selectedOption = i; // 0: 繼續, 1: 退出
+                    }
+                }
+            }
+        }
+
+        // 繪製UI
+        BeginDrawing();
+        ClearBackground(backgroundColor);
+
+        // 繪製標題（帶閃爍效果）
+        float alpha = 0.5f + 0.5f * sinf(time * 2.0f * PI);
+        Color pulsatingTitleColor = {titleColor.r, titleColor.g, titleColor.b, (unsigned char)(alpha * 255)};
+        int titleWidth = MeasureText(titleText, fontSizeTitle);
+        DrawText(titleText, screenWidth / 2 - titleWidth / 2, startingY, fontSizeTitle, pulsatingTitleColor);
+
+        // 繪製武器列表
+        for (int i = 0; i < maxWeapons; i++) {
+            int index = weaponIndices[i];
+            char weaponText[100];
+            snprintf(weaponText, sizeof(weaponText), "%s (Attack: %f)", hero->weapons[index]->name, hero->weapons[index]->attackPower);
+            int textWidth = MeasureText(weaponText, fontSizeText);
+            DrawText(weaponText, screenWidth / 2 - textWidth / 2, startingY + fontSizeTitle + verticalPadding + i * (fontSizeText + verticalPadding), fontSizeText, weaponTextColor);
+        }
+
+        // 繪製按鈕
+        for (int i = 0; i < numButtons; i++) {
+            if (i == hoveredButton) {
+                DrawRectangleRec(buttons[i], buttonHoveredColor);
+            } else {
+                DrawRectangleRec(buttons[i], buttonNormalColor);
+            }
+            DrawRectangleLinesEx(buttons[i], 2, buttonBorderColor);
+            int textWidth = MeasureText(buttonNames[i], fontSizeText);
+            DrawText(buttonNames[i], buttons[i].x + buttons[i].width / 2 - textWidth / 2, buttons[i].y + 15, fontSizeText, buttonTextColor);
+        }
+
+        EndDrawing();
+    }
+
+    return selectedOption;
 }
