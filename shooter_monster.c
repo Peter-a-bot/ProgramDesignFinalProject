@@ -581,26 +581,26 @@ void draw_projectiles() {
             // 火焰中心
             Color core = (Color){ 200, 180, 255, 255 };
             DrawCircle(screen_x, screen_y, CELL_SIZE * 0.1f * 3, core);
-            // 添加火焰方向指示
-            int tail_x = projectiles[i].x;
-            int tail_y = projectiles[i].y;
+            // // 添加火焰方向指示
+            // int tail_x = projectiles[i].x;
+            // int tail_y = projectiles[i].y;
             
-            // 根据方向绘制火焰尾巴
-            switch(projectiles[i].direction) {
-                case 0: tail_x += 1; break; // 上
-                case 1: tail_x -= 1; break; // 下
-                case 2: tail_y += 1; break; // 左
-                case 3: tail_y -= 1; break; // 右
-            }
+            // // 根据方向绘制火焰尾巴
+            // switch(projectiles[i].direction) {
+            //     case 0: tail_x += 1; break; // 上
+            //     case 1: tail_x -= 1; break; // 下
+            //     case 2: tail_y += 1; break; // 左
+            //     case 3: tail_y -= 1; break; // 右
+            // }
             
-            // 绘制尾巴
-            if (tail_x >= 0 && tail_y >= 0) {
-                Color tail = PURPLE_BLUE;
-                tail.a = 100;
-                DrawCircle(tail_y * CELL_SIZE + CELL_SIZE/2,
-                        tail_x * CELL_SIZE + CELL_SIZE/2,
-                        CELL_SIZE * 0.15f * 3, tail);
-            }
+            // // 绘制尾巴
+            // if (tail_x >= 0 && tail_y >= 0) {
+            //     Color tail = PURPLE_BLUE;
+            //     tail.a = 100;
+            //     DrawCircle(tail_y * CELL_SIZE + CELL_SIZE/2,
+            //             tail_x * CELL_SIZE + CELL_SIZE/2,
+            //             CELL_SIZE * 0.15f * 3, tail);
+            // }
         }
         
     }
@@ -640,8 +640,8 @@ void update_shooter_monsters(Hero *hero) {
         if(shooter_monsters[i].cooldown == 0){
             printf("Shooter monster %d firing at position (%d,%d)\n", i, shooter_monsters[i].x, shooter_monsters[i].y);
               // 計算怪物中心位置（轉換為格子座標）
-            int center_x = shooter_monsters[i].x + shooter_monsters[i].width * CELL_SIZE/2;
-            int center_y = shooter_monsters[i].y + shooter_monsters[i].height * CELL_SIZE/2;
+            int center_x = shooter_monsters[i].x + CELL_SIZE * 2;
+            int center_y = shooter_monsters[i].y + CELL_SIZE * 2;
               
             // 向四個方向發射
             for (int dir = 0; dir < 4; dir++) {

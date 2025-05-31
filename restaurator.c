@@ -5,6 +5,7 @@
 #include "barrier.h"
 #include "whip.h"
 #include "shockstaff.h"
+#include "fireball.h"
 
 #include "hero.h"
 #include "warrior.h"
@@ -24,11 +25,11 @@ void DrawGameUI(float time, int currentHP, int maxHP, int currentXP, int maxXP);
 
 int main() {
   //初始化視窗
-  // const int screenWidth = 1980;
-  // const int screenHeight = 1080;
+  const int screenWidth = 1980;
+  const int screenHeight = 1080;
   //
-  const int screenWidth = 800;
-  const int screenHeight = 800;
+  // const int screenWidth = 800;
+  // const int screenHeight = 800;
 
   InitWindow(screenWidth, screenHeight, "Restaurator");
 
@@ -85,6 +86,7 @@ int main() {
 
     switch (weaponCode) {
       case 0:
+        weapon = &FireBallInit()->base;
         break;
       case 1:
         weapon = &LaserGunInit()->base;
@@ -213,6 +215,8 @@ int main() {
           if(hero->weaponCount <= 6) {
             switch (weaponCode) {
               case 0:
+                hero->weapons[hero->weaponCount] = &FireBallInit()->base;
+                hero->weaponCount++;
                 break;
               case 1:
                 hero->weapons[hero->weaponCount] = &LaserGunInit()->base;
