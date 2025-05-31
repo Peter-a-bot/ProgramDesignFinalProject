@@ -176,6 +176,16 @@ int main() {
       if(IsKeyPressed(KEY_T)) {
         hero->exp = hero->nextLevelExp;
       }
+      if(IsKeyPressed(KEY_P)) {
+        int option = PauseScreen(hero);
+
+        if(option == 0) {
+          continue;
+        }
+        else{
+          isExit = true;
+        }
+      }
 
 
       //更新遊戲時間
