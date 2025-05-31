@@ -4,6 +4,7 @@
 #include "lasergun.h"
 #include "barrier.h"
 #include "whip.h"
+#include "shockstaff.h"
 
 #include "hero.h"
 #include "warrior.h"
@@ -12,6 +13,7 @@
 
 #include "basic_monster.h"
 #include "monster.h"
+#include "shooter_monster.h"
 
 #include "treasure.h"
 #include "map_system.h"
@@ -22,8 +24,11 @@ void DrawGameUI(float time, int currentHP, int maxHP, int currentXP, int maxXP);
 
 int main() {
   //初始化視窗
-  const int screenWidth = 1980;
-  const int screenHeight = 1080;
+  // const int screenWidth = 1980;
+  // const int screenHeight = 1080;
+  //
+  const int screenWidth = 800;
+  const int screenHeight = 800;
 
   InitWindow(screenWidth, screenHeight, "Restaurator");
 
@@ -90,6 +95,7 @@ int main() {
         break;
 
       case 3:
+        weapon = &ShockStaffInit()->base;
         break;
 
       case 4:
@@ -107,6 +113,8 @@ int main() {
     //主遊戲部份
     // 怪物初始化
     spawn_monsters(hero);
+    init_shooter_monsters();
+    init_projectiles();
     init_explosions();
 
     //寶箱初始化
@@ -163,6 +171,9 @@ int main() {
 
       //新增敵人
       add_monsters(hero);
+      spawn_shooter_monster(hero);
+      update_shooter_monsters(hero);
+      update_projectiles(hero);
 
 
       //怪物向敵人移動
@@ -185,10 +196,13 @@ int main() {
           draw_monsters();
 
           check_collision(hero);
+          check_shooter_monster_collision(hero);
           get_demage(hero);
+          get_shooter_monster_demage(hero);
 
           update_explosion();
-
+          draw_shooter_monsters();
+          draw_projectiles();
           draw_explosions();
 
           Treasure_DrawAll();
@@ -211,6 +225,8 @@ int main() {
                 break;
 
               case 3:
+                hero->weapons[hero->weaponCount] = &ShockStaffInit()->base;
+                hero->weaponCount++;
                 break;
 
               case 4:

@@ -62,8 +62,8 @@ Treasure Treasure_Init(Vector2 position, Texture2D closedTex, Texture2D openedTe
 void Treasure_OnMonsterKilled(Hero* hero) {
     if (dead_monster_count >= needed_dead_monster && treasure_count < MAX_TREASURES) {
         Vector2 pos = Treasure_GetRandomPositionNearPlayer(hero);
-        Texture2D closedTex = LoadTexture("closedtreasure.png");
-        Texture2D openedTex = LoadTexture("openedtreasure.png");
+        Texture2D closedTex = LoadTexture("resources/treasure/closedtreasure.png");
+        Texture2D openedTex = LoadTexture("resources/treasure/openedtreasure.png");
         treasures[treasure_count++] = Treasure_Init(pos, closedTex, openedTex);
         needed_dead_monster += 30;
     }

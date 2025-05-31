@@ -18,7 +18,7 @@
 // 爆炸效果設定
 
 // 同時存在的最大爆炸數量
-#define MAX_EXPLOSIONS 100  
+#define MAX_EXPLOSIONS 1000  
 
 // 爆炸動畫的總幀數
 #define EXPLOSION_FRAMES 15  

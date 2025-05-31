@@ -53,9 +53,6 @@ void BarrierUpdate(Weapon* self, double deltaTime) {
     barrier->base.position.y + barrier->base.texture.height/2.0f + BARRIER_OFFSET,
   };
 
-  //調整圓的半徑
-  // barrier->radius *= barrier->base.attackRange;
-
   barrier->base.attack(&barrier->base);
 }
 

@@ -402,7 +402,7 @@ void check_collision(Hero *hero) {
                     monsters[i].is_active = 0;
                     active_monster_count--;
                     
-                    // 增加死亡怪物計數
+                // 增加死亡怪物計數
                     dead_monster_count++;
                     
                 }

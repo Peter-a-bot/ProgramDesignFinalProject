@@ -15,10 +15,10 @@
 #define DEAD_MONSTERS_TO_SPAWN_SHOOTER 10  
 
 // 最大射擊物數量
-#define MAX_PROJECTILES 20  
+#define MAX_PROJECTILES 1000  
 
 // 射程範圍
-#define PROJECTILE_RANGE 10  
+#define PROJECTILE_RANGE 100 
 
 // 射擊機率(數值越小越容易射擊，範圍1-100)
 #define SHOOTER_FIRE_CHANCE 80  
@@ -44,16 +44,6 @@ typedef struct {
     Color color;        // 顏色
 } Projectile;
 
-
-ShooterMonster shooter_monsters[MAX_SHOOTER_MONSTERS];
-Projectile projectiles[MAX_PROJECTILES];
-int current_shooter_count = 0;  // 當前射擊怪物數量
-
-
-Color PURPLE_BLUE = (Color){ 120, 80, 255, 255 }; // 紫藍色
-
-
-
 // 初始化爆炸效果
 void init_shooter_monsters();
 void init_projectiles();
@@ -67,5 +57,7 @@ void update_projectiles(Hero *hero);//火焰射擊物的更新
 
 void draw_shooter_monsters();//繪製射擊怪物
 void draw_projectiles();//繪製射擊物(火焰)
+void check_shooter_monster_collision(Hero* hero);
+void get_shooter_monster_demage(Hero* hero);
 
 #endif
