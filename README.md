@@ -49,3 +49,24 @@ P:暫停
 結界會在角色周圍生成，攻擊進入結界內部的敵人
 ![](resources/weapon/barrier.png)
 
+## Monsters
+
+### Normal monster
+一點一點閃爍,並靠近玩家的敵人
+
+### Chain monster
+發射綠色子彈，有高血量的敵人
+
+### Faster monster
+有著藍色外觀，以快速的速度接近玩家的敵人
+
+### Shooter monster
+會朝隨機方向射擊的敵人
+
+## Work allocation table
+胡柏安：角色設計、武器設計、程式碼審查＆管理、UI設計
+蘇睦堯：怪物設計
+陳祈翰：寶箱系統
+蔡沂哲：角色升級系統
+廖彥翔：地圖選擇系統 ＆ 角色選擇系統
+蔡政祐：武器升級系統
