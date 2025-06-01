@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include <raylib.h>
+#include <stdlib.h>
+#include <time.h>
 #include"hero.h"
 #include"basic_monster.h"
 #include"collisionbox.h"
@@ -642,12 +644,11 @@ void update_shooter_monsters(Hero *hero) {
               // 計算怪物中心位置（轉換為格子座標）
             int center_x = shooter_monsters[i].x + CELL_SIZE * 2;
             int center_y = shooter_monsters[i].y + CELL_SIZE * 2;
-              
+
+            int random_dir = rand()%4;
+
             // 向四個方向發射
-            for (int dir = 0; dir < 4; dir++) {
-                // create_projectile(shooter_monsters[i].x, shooter_monsters[i].y, dir, PURPLE_BLUE);
-                create_projectile(center_x, center_y,dir,PURPLE_BLUE);
-            }
+            create_projectile(center_x, center_y,random_dir,PURPLE_BLUE);
             
             // 重設冷卻時間
             shooter_monsters[i].cooldown = 30;             

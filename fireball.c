@@ -13,7 +13,7 @@ FireBall* FireBallInit() {
   Weapon* base = WeaponInition(
     weaponName,                                      //武器名稱
     LoadTexture("resources/weapon/fireball.png"),       //武器貼圖
-    40.f,                                           //攻擊力
+    40.0f,                                           //攻擊力
     1.0f,                                            //攻擊範圍
     5.0f,                                           //攻擊速度
     5.0f,                                            //冷卻時間

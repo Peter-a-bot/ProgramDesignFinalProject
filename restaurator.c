@@ -15,6 +15,8 @@
 #include "basic_monster.h"
 #include "monster.h"
 #include "shooter_monster.h"
+#include "chain_monster.h"
+#include "fast_monster.h"
 
 #include "treasure.h"
 #include "map_system.h"
@@ -32,6 +34,8 @@ int main() {
   // const int screenHeight = 800;
 
   InitWindow(screenWidth, screenHeight, "Restaurator");
+
+  srand(time(NULL));
 
   SetTargetFPS(60);
 
@@ -115,8 +119,15 @@ int main() {
     //主遊戲部份
     // 怪物初始化
     spawn_monsters(hero);
+    spawn_fast_monsters(hero);
     init_shooter_monsters();
     init_projectiles();
+
+    init_chain_monsters();
+    init_chain();
+
+    
+    
     init_explosions();
 
     //寶箱初始化
@@ -142,8 +153,7 @@ int main() {
     
 
     //主遊戲循環
-    while(curTime < 300.0f && !isHeroDead && !isHeroWin) {
-      //確認角色血量
+    while(curTime < 150.0f && !isHeroDead && !isHeroWin) { //確認角色血量
       if(hero->hp <= 0) {
         isHeroDead = 1;
       }
@@ -196,13 +206,23 @@ int main() {
 
       //新增敵人
       add_monsters(hero);
+      add_fast_monsters(hero);
       spawn_shooter_monster(hero);
+      spawn_chain_monster(hero);
+
+      
       update_shooter_monsters(hero);
       update_projectiles(hero);
+
+      update_chain_monsters(hero);
+      update_chain(hero);
+
+      
 
 
       //怪物向敵人移動
       move_monsters_towards_player(hero);
+      move_fast_monsters_towards_player(hero);
       // 
       //攝影機調整至角色中心
       camera.target = (Vector2) {hero->position.x/2.0f, hero->position.y/2.0f};
@@ -219,15 +239,24 @@ int main() {
           hero->update(hero, timeDiff);
           hero->draw(hero);
           draw_monsters();
+          draw_fast_monsters();
 
           check_collision(hero);
+          check_fast_monster_collision(hero);
+
           check_shooter_monster_collision(hero);
           get_demage(hero);
+          get_fast_monster_demage(hero);
           get_shooter_monster_demage(hero);
+          get_chain_monster_demage(hero);
 
           update_explosion();
           draw_shooter_monsters();
           draw_projectiles();
+
+          draw_chain_monsters();
+          draw_chain();
+          
           draw_explosions();
 
           Treasure_DrawAll();
@@ -245,7 +274,6 @@ int main() {
                 hero->weapons[hero->weaponCount] = &LaserGunInit()->base;
                 hero->weaponCount++;
                 break;
-
               case 2:
                 hero->weapons[hero->weaponCount] = &KatanaInit()->base;
                 hero->weaponCount++;
@@ -283,9 +311,10 @@ int main() {
 
       //替換已有的敵人
       replace_missing_monsters(hero);
+      replace_missing_fast_monsters(hero);
     }
 
-    if(curTime >= 300.0f) {
+    if(curTime >= 150.0f) {
       isHeroWin = 1;
     }
 

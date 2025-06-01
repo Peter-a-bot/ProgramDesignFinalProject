@@ -11,14 +11,24 @@
 double chain_monster_next_spawn_time = 3.0f;
 
 ChainMonster chain_monsters[MAX_CHAIN_MONSTERS];
+Explosion_Chain chain_explosions[MAX_CHAIN_EXPLOSIONS];  // 爆炸數組
 Chain chain[MAX_CHAIN_NUM];
 int current_chain_count = 0;  // 當前鎖鏈怪物數量
 
 int dead_chain_monster_count = 0; // 當前死亡的鎖鏈怪物數量
 
-Color PURPLE_BLUE = (Color){ 120, 80, 255, 255 }; // 紫藍色
+Color PURPLE_BLUE_CHAIN = (Color){ 120, 80, 254, 254 }; // 紫藍色
 Color STONE_BASE_COLOR = (Color){ 100, 100, 100, 255 }; // 中灰色，作為石頭主要顏色
 Color STONE_DETAIL_COLOR = (Color){ 80, 80, 80, 255 }; // 稍深一點的灰色，用於細節或陰影
+
+Color DarkenColor(Color original, float factor) {
+    return (Color) {
+    (unsigned char)(original.r * factor),
+    (unsigned char)(original.g * factor),
+    (unsigned char)(original.b * factor),
+    255
+    };
+}
 
 // 初始化射擊型怪物
 void init_chain_monsters() {
@@ -43,12 +53,14 @@ void spawn_chain_monster(Hero *hero) {
             //random_empty_position(hero);
             
             for (int i = 0; i < MAX_CHAIN_MONSTERS; i++) {
-                if (!chain[i].is_active) {
+                if (!chain_monsters[i].is_active) {
                     Vector2 position = random_empty_position(hero);
                     chain_monsters[i].x = position.x;
                     chain_monsters[i].y = position.y;
                     chain_monsters[i].is_active = 1;
-                    chain_monsters[i].color = STONE_BASE_COLOR;  // 射擊怪物使用橙色
+
+                    chain_monsters[i].color = (Color) { GetRandomValue(50, 255), GetRandomValue(50, 255), GetRandomValue(50, 255), 255};
+                    
                     chain_monsters[i].cooldown = 30;   // 初始冷卻時間
                     chain_monsters[i].width=2;
                     chain_monsters[i].height=2;
@@ -71,7 +83,7 @@ void spawn_chain_monster(Hero *hero) {
 }
 
 //創建指定半徑的爆炸(鎖鏈怪物)
-void create_explosion_with_radius(int x, int y, Color color, int radius) {
+void create_explosion_with_radius_chain(int x, int y, Color color, int radius) {
     for (int i = 0; i < MAX_CHAIN_EXPLOSIONS; i++) {
         if (!chain_explosions[i].is_active) {
             chain_explosions[i].x = x;
@@ -88,7 +100,7 @@ void create_explosion_with_radius(int x, int y, Color color, int radius) {
 
 
 // 檢查玩家是否在爆炸範圍內
-bool check_player_in_explosion_radius(int explosion_x, int explosion_y, int radius,Hero *hero) {
+bool check_player_in_explosion_radius_chain(int explosion_x, int explosion_y, int radius,Hero *hero) {
     Vector2 circle;
     circle.x=explosion_x;
     circle.y=explosion_y;
@@ -101,25 +113,27 @@ bool check_player_in_explosion_radius(int explosion_x, int explosion_y, int radi
 void draw_chain_monsters() {
     for (int i = 0; i < MAX_CHAIN_MONSTERS; i++) {
         if (chain_monsters[i].is_active) {
+            Color monster_base_color = chain_monsters[i].color;
+            Color monster_detail_color = DarkenColor(monster_base_color, 0.7f);
             
             DrawRectangle(chain_monsters[i].x, chain_monsters[i].y, 
-                        CELL_SIZE * chain_monsters[i].width, CELL_SIZE * chain_monsters[i].height, STONE_BASE_COLOR);
+                        CELL_SIZE * chain_monsters[i].width, CELL_SIZE * chain_monsters[i].height, monster_base_color);
             
             DrawCircle(chain_monsters[i].x, 
                     chain_monsters[i].y, 
-                    CELL_SIZE * 0.6f, STONE_DETAIL_COLOR);
+                    CELL_SIZE * 0.6f, monster_detail_color);
 
             DrawCircle(chain_monsters[i].x, 
                     chain_monsters[i].y+CELL_SIZE, 
-                    CELL_SIZE * 0.6f, GOLD);
+                    CELL_SIZE * 0.6f, monster_detail_color);
 
             DrawCircle(chain_monsters[i].x+CELL_SIZE, 
                     chain_monsters[i].y+CELL_SIZE, 
-                    CELL_SIZE * 0.6f, STONE_DETAIL_COLOR);
+                    CELL_SIZE * 0.6f, monster_detail_color);
 
             DrawCircle(chain_monsters[i].x+CELL_SIZE, 
                     chain_monsters[i].y, 
-                    CELL_SIZE * 0.6f, PURPLE_BLUE);
+                    CELL_SIZE * 0.6f, monster_detail_color);
         }
     }
 }
@@ -206,7 +220,7 @@ void create_chain(int x, int y, int direction, Color color) {
             chain[i].direction = direction;
             chain[i].range_left = CHAIN_RANGE;
             chain[i].is_active = true;
-            chain[i].color = PURPLE_BLUE;
+            chain[i].color = WHITE;
 
             // 設定碰撞箱
             chain[i].box.rec.x = chain[i].position.x * CELL_SIZE;
@@ -223,7 +237,7 @@ void create_chain(int x, int y, int direction, Color color) {
 }
 
 //更新鎖鏈
-void update_projectiles(Hero *hero) {
+void update_chain(Hero *hero) {
     for (int i = 0; i < MAX_CHAIN_NUM; i++) {
         if (!chain[i].is_active) continue;
         
@@ -268,9 +282,12 @@ void update_projectiles(Hero *hero) {
         // 如果需要爆炸
         if (should_explode) {
             // 使用正確的座標創建爆炸
+            //
+            Color explotion_color = (Color) { GetRandomValue(50, 255), GetRandomValue(50, 255), GetRandomValue(50, 255), 255};
+             
             create_explosion_with_radius((int)chain[i].position.x, 
                                        (int)chain[i].position.y, 
-                                       PURPLE_BLUE, 6);
+                                       explotion_color, 6);
             chain[i].is_active = false;
             
             // 檢查玩家是否在爆炸範圍內
@@ -290,23 +307,26 @@ void draw_chain() {
     for (int i = 0; i < MAX_CHAIN_NUM; i++) {
         if (chain[i].is_active) {
             // 使用正確的座標繪製
-            int screen_x = (int)chain[i].position.x * CELL_SIZE + CELL_SIZE/2;
-            int screen_y = (int)chain[i].position.y * CELL_SIZE + CELL_SIZE/2;
+            int screen_x = (int)chain[i].position.x+ CELL_SIZE/2;
+            int screen_y = (int)chain[i].position.y+ CELL_SIZE/2;
             
-            // 火焰主體 - 紫藍色
-            Color flame = PURPLE_BLUE;
-            // 根據射程剩餘量調整透明度
-            flame.a = 180 + (unsigned char)(75.0f * chain[i].range_left / CHAIN_RANGE);
-            
+
+            //計算爆炸透明度
+            float alpha_ratio = chain[i].range_left / (float)CHAIN_RANGE;
+            unsigned char alpha_outer = (unsigned char)(180.0f * alpha_ratio);
+            unsigned char alpha_middle = (unsigned char)(220.0f * alpha_ratio);
+
+           
             // 繪製火焰效果
+            Color flame = (Color){80, 0, 120, alpha_outer};
             DrawCircle(screen_x, screen_y, CELL_SIZE * 0.3f * 3, flame);
                     
             // 火焰內核
-            Color inner_flame = (Color){ 150, 120, 255, 255 };
+            Color inner_flame = (Color){ 0, 255, 0, alpha_middle};
             DrawCircle(screen_x, screen_y, CELL_SIZE * 0.2f * 3, inner_flame);
             
             // 火焰中心
-            Color core = (Color){ 200, 180, 255, 255 };
+            Color core = (Color){ 200, 255, 0, 255 };
             DrawCircle(screen_x, screen_y, CELL_SIZE * 0.1f * 3, core);
             
         }
@@ -354,7 +374,7 @@ void update_chain_monsters(Hero *hero) {
             // 向四個方向發射
             for (int dir = 0; dir < 4; dir++) {
                 // create_projectile(shooter_monsters[i].x, shooter_monsters[i].y, dir, PURPLE_BLUE);
-                create_projectile(center_x, center_y,dir,PURPLE_BLUE);
+                create_chain(center_x, center_y,dir,PURPLE_BLUE_CHAIN);
             }
             
             // 重設冷卻時間
@@ -362,3 +382,5 @@ void update_chain_monsters(Hero *hero) {
         }
     }
 }
+
+

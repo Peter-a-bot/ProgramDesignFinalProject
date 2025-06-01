@@ -86,7 +86,7 @@ void HeroUpdate(Hero *self, double deltaTime) {
     if (self->exp >= self->nextLevelExp) {
         self->exp -= self->nextLevelExp;
         self->level++;
-        self->nextLevelExp = (int)(self->nextLevelExp * 1.5); // 升級需求提升
+        self->nextLevelExp = (int)(self->nextLevelExp * 4.5); // 升級需求提升
 
         // 呼叫被動選單
         int selectedPassive = PassiveSelectionInterfece();

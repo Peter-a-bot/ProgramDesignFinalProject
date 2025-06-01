@@ -8,10 +8,10 @@
 #include "collisionbox.h"
 
 // 定義怪物最大數量、初始數量、生成速率和生成間隔
-#define MAX_FAST_MONSTER_COUNT 100
-#define INITIAL_FAST_MONSTER_COUNT 5
-#define MONSTER_SPAWN_RATE 2
-#define MONSTER_SPAWN_INTERVAL 5.0f // 每 5 秒生成一次
+#define MAX_FAST_MONSTER_COUNT 200
+#define INITIAL_FAST_MONSTER_COUNT 10
+#define FAST_MONSTER_SPAWN_RATE 1
+#define FAST_MONSTER_SPAWN_INTERVAL 3.0f // 每 3 秒生成一次
 
 // 定義地圖尺寸和單元格大小 (假設這些在其他地方有定義)
 // #define MAP_WIDTH 50
@@ -47,11 +47,12 @@ extern float next_fast_spawn_time;     // 下次怪物生成時間
 //extern void create_explosion(int x, int y, Color c); // 創建爆炸效果
 
 // 怪物相關函數宣告
-void spawn_monsters(Hero *hero);
-void move_monsters_towards_player(Hero *hero);
-void add_monsters(Hero *hero);
-void replace_missing_monsters(Hero *hero);
-void draw_monsters();
-void check_collision(Hero *hero);
+void spawn_fast_monsters(Hero *hero);
+void move_fast_monsters_towards_player(Hero *hero);
+void add_fast_monsters(Hero *hero);
+void replace_missing_fast_monsters(Hero *hero);
+void draw_fast_monsters();
+void check_fast_monster_collision(Hero *hero);
+void get_fast_monster_demage(Hero* hero);
 
 #endif // FAST_MONSTER_H

@@ -55,7 +55,6 @@ typedef struct {
     Color color;        // 爆炸顏色
     int radius;         // 爆炸半徑
 } Explosion_Chain;
-Explosion_Chain chain_explosions[MAX_CHAIN_EXPLOSIONS];  // 爆炸數組
 
 
 
