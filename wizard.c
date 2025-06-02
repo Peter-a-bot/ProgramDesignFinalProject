@@ -10,7 +10,7 @@ Wizard* WizardInit() {
     heroName,                                            //角色姓名        
     (Vector2){0,0},                                      //角色初始位置
     LoadTexture("resources/hero/wizard.png"),            //角色貼圖
-    80.0f,                                              //角色攻擊力
+    140.0f,                                              //角色攻擊力
     1.3f,                                                //角色速度
     60.0f,                                              //角色血量
     0.3f,                                                //角色血量回復速度

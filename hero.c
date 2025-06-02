@@ -133,6 +133,8 @@ double CheckDemage(CollisionBox* box, Hero *self) {
     damage += self->weapons[i]->checkDemage(self->weapons[i], box);
   }
 
+  damage += self->attackPower/2;
+
   return damage;
 }
 

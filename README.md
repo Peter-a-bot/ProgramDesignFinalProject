@@ -3,19 +3,18 @@
 某一天，世界各地出現了裂縫，從中出現了一群方塊狀的敵人，無差別攻擊人民，並且製造幻覺，使武器的攻擊範圍產生混亂。危難之中，一群名為「Restaurator」的英雄站了出來，他們使用由敵人靈魂構成的武器對抗敵人，守衛家園。
 
 ## Basic Controls
-上下左右鍵移動
+上下左右鍵移動 \\
 P:暫停
 
 ## Characters
 
 ### Warrior
-戰士擁有高傷害和高血量,但是移動速度較低
+戰士擁有較高傷害和高血量,但是移動速度較低
 
 ![](resources/hero/warrior.png)
 
 ### Wizard
-巫師的具有中等程度的攻擊力、血量和移動速度
-
+巫師具有最高的攻擊力、最低的移動速度和較少的血量
 ![](resources/hero/wizard.png)
 
 ### Archer
@@ -63,10 +62,18 @@ P:暫停
 ### Shooter monster
 會朝隨機方向射擊的敵人
 
+### How to run the game?
+在linux系統下，安裝完raylib後，使用以下命令編譯程式： \\
+'''
+gcc -o restaurator restaurator.c shooter_monster.c  treasure.c map_system.c collisionbox.c hero.c warrior.c archer.c barrier.c katana.c whip.c wizard.c basic_monster.c monster.c lasergun.c shockstaff.c weapon.c selectioninterface.c fireball.c chain_monster.c fast_monster.c -g -lm -lraylib -lpthread -ldl -lrt -lX11
+
+'''
+接著再運行restaurator即可進行遊玩
+
 ## Work allocation table
-胡柏安：角色設計、武器設計、程式碼審查＆管理、UI設計
-蘇睦堯：怪物設計
-陳祈翰：寶箱系統
-蔡沂哲：角色升級系統
-廖彥翔：地圖選擇系統 ＆ 角色選擇系統
+胡柏安：角色設計、武器設計、程式碼審查＆管理、UI設計 \\
+蘇睦堯：怪物設計 \\
+陳祈翰：寶箱系統 \\
+蔡沂哲：角色升級系統 \\
+廖彥翔：地圖選擇系統 ＆ 角色選擇系統 \\
 蔡政祐：武器升級系統
