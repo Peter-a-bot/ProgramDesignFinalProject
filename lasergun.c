@@ -15,6 +15,7 @@ LaserGun* LaserGunInit() {
   Weapon* base = WeaponInition(
     weaponName,                                      //武器名稱
     LoadTexture("resources/weapon/laser.png"),       //武器貼圖
+    LoadSound("resources/sound/laser.mp3"),          //武器攻擊音效
     100.f,                                           //攻擊力
     0.5f,                                            //攻擊範圍
     20.0f,                                           //攻擊速度
@@ -96,6 +97,7 @@ void LaserGunUpdate(Weapon *self, double deltaTime) {
   //冷卻結束，繼續攻擊
   if(laser->base.curCooldownTime == 0.0f && !laser->base.isAttack) {
     laser->base.isAttack = true;
+    PlaySound(laser->base.sound);
   }
   
 }

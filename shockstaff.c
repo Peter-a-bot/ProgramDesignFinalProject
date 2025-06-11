@@ -13,6 +13,7 @@ ShockStaff* ShockStaffInit() {
   Weapon* base = WeaponInition(
     weaponName,                                            //武器名稱
     LoadTexture("resources/weapon/energyball.png"),        //武器貼圖
+    LoadSound("resources/sound/shockstaff.mp3"),
     30.0f,                                                  //攻擊力
     3.0f,                                                  //攻擊範圍
     20.0f,                                                 //攻擊速度
@@ -50,6 +51,7 @@ void ShockStaffAttack(Weapon *self) {
 
 void ShockStaffUpdate(Weapon *self, double deltaTime) {
   ShockStaff* shockstaff = (ShockStaff*)self;
+  int isPlaySound = 0;
 
   //調整貼圖的位置
   shockstaff->base.position.x += SHOCKSTAFF_OFFSET;
@@ -88,6 +90,7 @@ void ShockStaffUpdate(Weapon *self, double deltaTime) {
   //冷卻結束，繼續攻擊
   if(shockstaff->base.curCooldownTime == 0.0f && !shockstaff->base.isAttack) {
     shockstaff->base.isAttack = true;
+    PlaySound(shockstaff->base.sound);
   }
 }
 

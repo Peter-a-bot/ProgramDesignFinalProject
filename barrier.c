@@ -13,6 +13,7 @@ Barrier* BarrierInit() {
   Weapon* base = WeaponInition(
     weaponName,                                            //武器名稱
     LoadTexture("resources/weapon/barrier.png"),           //武器貼圖
+    LoadSound(""),
     10.0f,                                                  //攻擊力
     2.0f,                                                  //攻擊範圍
     20.0f,                                                 //攻擊速度

@@ -1,5 +1,6 @@
 #include <raylib.h>
 #include <stdlib.h>
+#include "shockstaff.h"
 #include "weapon.h"
 #include "katana.h"
 
@@ -11,6 +12,7 @@ Katana* KatanaInit() {
   Weapon* base = WeaponInition(
     weaponName,                                      //武器名稱
     LoadTexture("resources/weapon/katana.png"),       //武器貼圖
+    LoadSound("resources/sound/katana.mp3"),        //武器攻擊音效
     40.f,                                           //攻擊力
     1.0f,                                            //攻擊範圍
     5.0f,                                           //攻擊速度
@@ -91,6 +93,7 @@ void KatanaUpdate(Weapon *self, double deltaTime) {
   //冷卻結束，繼續攻擊
   if(katana->base.curCooldownTime == 0.0f && !katana->base.isAttack) {
     katana->base.isAttack = true;
+    PlaySound(katana->base.sound);
   }
 }
 

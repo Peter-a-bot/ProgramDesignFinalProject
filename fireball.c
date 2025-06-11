@@ -13,6 +13,7 @@ FireBall* FireBallInit() {
   Weapon* base = WeaponInition(
     weaponName,                                      //武器名稱
     LoadTexture("resources/weapon/fireball.png"),       //武器貼圖
+    LoadSound("resources/sound/fireball.mp3"),       //攻擊音效
     40.0f,                                           //攻擊力
     1.0f,                                            //攻擊範圍
     5.0f,                                           //攻擊速度
@@ -64,7 +65,7 @@ void FireBallAttack(Weapon* self) {
 }                       
 
 void FireBallUpdate(Weapon *self, double deltaTime) {
-  
+
   FireBall* fireball = (FireBall*)self;
   
   //調整碰撞箱的大小和位置
@@ -102,6 +103,7 @@ void FireBallUpdate(Weapon *self, double deltaTime) {
   //冷卻結束，繼續攻擊
   if(fireball->base.curCooldownTime == 0.0f && !fireball->base.isAttack) {
     fireball->base.isAttack = true;
+    PlaySound(fireball->base.sound);
   }
 }
 

@@ -397,6 +397,11 @@ void check_collision(Hero *hero) {
                 // 僅當怪物生命值為0或更低時才爆炸
                 if (monsters[i].health <= 0) {
                     // 在怪物生命0時創建爆炸
+                    // 播放爆炸音效
+                    Sound sound = LoadSound("resources/sound/mansterDie.mp3");
+                    PlaySound(sound);
+                    UnloadSound(sound);
+
                     create_explosion(monsters[i].x, monsters[i].y, monsters[i].color);
                     draw_explosions();
                     // 標記怪物為非活躍
@@ -422,6 +427,10 @@ void get_demage(Hero* hero) {
 
             if(monsters[i].health <= 0) {
                 // 在怪物生命0時創建爆炸
+                // 播放爆炸音效
+                Sound sound = LoadSound("resources/sound/mansterDie.mp3");
+                PlaySound(sound);
+
                 create_explosion(monsters[i].x, monsters[i].y, monsters[i].color);
                 draw_explosions();
                 // 標記怪物為非活躍

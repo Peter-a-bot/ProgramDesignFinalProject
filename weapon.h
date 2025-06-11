@@ -8,6 +8,7 @@ typedef struct Weapon{
   //武器基本屬性
   char name[51];                 //武器名稱 
   Texture2D texture;             //武器貼圖
+  Sound sound;                   //武器攻擊音效
   
   double attackPower;            //攻擊力
   double attackRange;            //攻擊範圍
@@ -32,6 +33,6 @@ typedef struct Weapon{
 }Weapon;
 
 //武器初始化函數，用以初始化基本的武器資訊
-Weapon* WeaponInition(char name[51],Texture2D texture, double attackPower, double attackRange, double attackSpeed, double maxCoolTime, Vector2 position);  
+Weapon* WeaponInition(char name[51],Texture2D texture,Sound sound, double attackPower, double attackRange, double attackSpeed, double maxCoolTime, Vector2 position);  
 
 #endif

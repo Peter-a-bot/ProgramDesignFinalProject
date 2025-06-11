@@ -944,6 +944,9 @@ void check_fast_monster_collision(Hero *hero) {
                 // 僅當怪物生命值為 0 或更低時才爆炸
                 if (fast_monsters[i].health <= 0) {
                     // 在怪物生命 0 時創建爆炸
+                    // 播放爆炸音效
+                    Sound sound = LoadSound("resources/sound/mansterDie.mp3");
+                    PlaySound(sound);
                     create_explosion(fast_monsters[i].x, fast_monsters[i].y, fast_monsters[i].color);
                     // 標記怪物為非活躍
                     fast_monsters[i].is_active = 0;
@@ -966,6 +969,9 @@ void get_fast_monster_demage(Hero* hero) {
 
             if(fast_monsters[i].health <= 0) {
                 // 在怪物生命0時創建爆炸
+                // 播放爆炸音效
+                Sound sound = LoadSound("resources/sound/mansterDie.mp3");
+                PlaySound(sound);
                 create_explosion(fast_monsters[i].x, fast_monsters[i].y, fast_monsters[i].color);
                 draw_explosions();
                 // 標記怪物為非活躍

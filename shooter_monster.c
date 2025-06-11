@@ -402,6 +402,9 @@ void check_shooter_monster_collision(Hero *hero) {
                 // 僅當怪物生命值為0或更低時才爆炸
                 if (shooter_monsters[i].health <= 0) {
                     // 在怪物生命0時創建爆炸
+                    // 播放爆炸音效
+                    Sound sound = LoadSound("resources/sound/mansterDie.mp3");
+                    PlaySound(sound);
                     create_explosion(shooter_monsters[i].x, shooter_monsters[i].y, shooter_monsters[i].color);
                     draw_explosions();
                     // 標記怪物為非活躍

@@ -12,6 +12,7 @@ Whip* WhipInit() {
   Weapon* base = WeaponInition(
     weaponName,                                      //武器名稱
     LoadTexture("resources/weapon/whip.png"),        //武器貼圖
+    LoadSound("resources/sound/whip.mp3"),           //武器攻擊音效
     30.f,                                            //攻擊力
     1.0f,                                            //攻擊範圍
     20.0f,                                           //攻擊速度
@@ -92,6 +93,7 @@ void WhipUpdate(Weapon *self, double deltaTime) {
   //冷卻結束，繼續攻擊
   if(whip->base.curCooldownTime == 0.0f && !whip->base.isAttack) {
     whip->base.isAttack = true;
+    PlaySound(whip->base.sound);
   }
 }
 

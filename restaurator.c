@@ -31,11 +31,11 @@ int main() {
   //初始化視窗
   const int screenWidth = 1980;
   const int screenHeight = 1080;
-  //
-  // const int screenWidth = 800;
-  // const int screenHeight = 800;
 
   InitWindow(screenWidth, screenHeight, "Restaurator");
+
+  //初始化音效裝置
+  InitAudioDevice();
 
   srand(time(NULL));
 
@@ -44,6 +44,7 @@ int main() {
   while(!WindowShouldClose()) {
     //顯示主畫面
     int isExit = MainMenu();
+
 
     //若選擇退出，直接關閉遊戲
     if(isExit) {
@@ -153,6 +154,11 @@ int main() {
     camera.rotation = 0.0f;
     camera.zoom = 1.0f;
     
+    //播放bgm
+    Music FightBGM = LoadMusicStream("resources/bgm/fight.mp3");
+    SetMusicVolume(FightBGM, 2.0f);
+
+    PlayMusicStream(FightBGM);
 
     //主遊戲循環
     while(curTime < GAME_TIME && !isHeroDead && !isHeroWin) { //確認角色血量
@@ -199,6 +205,10 @@ int main() {
         }
       }
 
+
+      //更新BGM狀態
+      UpdateMusicStream(FightBGM);
+    
 
       //更新遊戲時間
       curTime += timeDiff;
@@ -316,9 +326,13 @@ int main() {
       replace_missing_fast_monsters(hero,mapCode);
     }
 
+    PauseMusicStream(FightBGM);
+
     if(curTime >= GAME_TIME) {
       isHeroWin = 1;
     }
+    //卸載戰鬥BGM
+    UnloadMusicStream(FightBGM);
 
     //勝利時呼叫勝利畫面
     if(isHeroWin) {
@@ -336,6 +350,8 @@ int main() {
   }
 
   CloseWindow();
+
+  CloseAudioDevice();
 
 }
 

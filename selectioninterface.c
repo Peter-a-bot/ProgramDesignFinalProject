@@ -8,6 +8,8 @@
 #define MAX_WEAPONS 6
 
 int WeaponSelectionInterfece() {
+    Sound sound = LoadSound("resources/sound/upgrade.mp3");
+    PlaySound(sound);
 
     // 武器名稱和描述
     const char *weaponNames[] = {
@@ -113,6 +115,10 @@ int WeaponSelectionInterfece() {
 
 int PassiveSelectionInterfece()
 {
+    //播放升級音效
+    Sound upgradeSound = LoadSound("resources/sound/upgrade.mp3");
+    PlaySound(upgradeSound);
+
     const char *passives[] = {"Recovery rate + 1", "Max hp +20%", "Attack Power +20%"};
     int numPassives = 3;
     // 檢查被動技能數量是否超過最大限制
@@ -202,6 +208,9 @@ int PassiveSelectionInterfece()
 }
 
 int DeathScreen(int score) {
+    //播放死亡BGM
+    Music deadBGM = LoadMusicStream("resources/bgm/failed.mp3");
+    PlayMusicStream(deadBGM);
     // 定義常量
     const char* titleText = "Game Over";
     const int fontSizeTitle = 30;
@@ -252,6 +261,9 @@ int DeathScreen(int score) {
         time += GetFrameTime();
         Vector2 mousePoint = GetMousePosition();
         int hoveredButton = -1;
+
+        //更新BGM
+        UpdateMusicStream(deadBGM);
 
         // 檢查重新開始按鈕
         if (CheckCollisionPointRec(mousePoint, restartButton)) {
@@ -307,10 +319,12 @@ int DeathScreen(int score) {
         EndDrawing();
     }
 
+    UnloadMusicStream(deadBGM);
     return selectedOption;
 }
 
 int CharacterSelectionInterface() {
+
     // 角色名稱和描述
     const char *characterNames[] = {
         "Warrior", "Wizard", "Archer"
@@ -409,6 +423,10 @@ int CharacterSelectionInterface() {
 }
 
 int VictoryScreen(double gameTime) {
+    //載入勝利BGM
+    Music victoryBGM = LoadMusicStream("resources/bgm/victory.mp3");
+    PlayMusicStream(victoryBGM);
+    
     // 定義常量
     const char* titleText = "Victory!";
     const int fontSizeTitle = 30;
@@ -426,6 +444,7 @@ int VictoryScreen(double gameTime) {
     Color buttonTextColor = WHITE;
     Color titleColor = BLUE;
     Color textColor = WHITE;
+
 
     // 獲取屏幕尺寸
     int screenWidth = GetScreenWidth();
@@ -458,6 +477,8 @@ int VictoryScreen(double gameTime) {
         time += GetFrameTime();
         Vector2 mousePoint = GetMousePosition();
         int hoveredButton = -1;
+
+        UpdateMusicStream(victoryBGM);
 
         // 檢查重新開始按鈕
         if (CheckCollisionPointRec(mousePoint, restartButton)) {
@@ -513,11 +534,17 @@ int VictoryScreen(double gameTime) {
         DrawText("Quit", (int)(quitButton.x + quitButton.width / 2 - quitTextWidth / 2), (int)(quitButton.y + 15), fontSizeText, buttonTextColor);
 
         EndDrawing();
+
     }
 
+    UnloadMusicStream(victoryBGM);
     return selectedOption;
 }
 int MainMenu() {
+    //播放BGM
+    Music mainBGM = LoadMusicStream("resources/bgm/mainMenu.mp3");
+    PlayMusicStream(mainBGM);
+
     // 定義常量
     const char *titleText = "Restaurator";
     const char *buttonNames[] = {"Start Game", "Quit Game"};
@@ -551,6 +578,9 @@ int MainMenu() {
         time += GetFrameTime();
         Vector2 mousePoint = GetMousePosition();
         hoveredButton = -1;
+
+        //更新BGM
+        UpdateMusicStream(mainBGM);
 
         // 檢查鼠標互動
         for (int i = 0; i < numButtons; i++) {
@@ -595,6 +625,8 @@ int MainMenu() {
 
         EndDrawing();
     }
+
+    UnloadMusicStream(mainBGM);
 
     return selectedOption;
 }
