@@ -5,13 +5,16 @@
 #include <stdlib.h>
 #include <time.h>
 #include "basic_monster.h"
+#include "chain_monster.h"
+#include "fast_monster.h"
+#include "shooter_monster.h"
 
 #define MAX_TREASURES 5
 
 static Treasure treasures[MAX_TREASURES];
 static int treasure_count = 0;
 
-static int needed_dead_monster = 30;
+static int needed_dead_monster = 60;
 
 // 初始化寶箱系統
 void Treasure_InitSystem(void) {
@@ -58,14 +61,14 @@ Treasure Treasure_Init(Vector2 position, Texture2D closedTex, Texture2D openedTe
 }
 
 
-// 怪物被擊殺時呼叫，達30隻生成寶箱
+// 怪物被擊殺時呼叫，達60隻生成寶箱
 void Treasure_OnMonsterKilled(Hero* hero) {
-    if (dead_monster_count >= needed_dead_monster && treasure_count < MAX_TREASURES) {
+    if ((dead_monster_count + dead_fast_monster_count + dead_shooter_monster_count + dead_chain_monster_count)>= needed_dead_monster && treasure_count < MAX_TREASURES) {
         Vector2 pos = Treasure_GetRandomPositionNearPlayer(hero);
         Texture2D closedTex = LoadTexture("resources/treasure/closedtreasure.png");
         Texture2D openedTex = LoadTexture("resources/treasure/openedtreasure.png");
         treasures[treasure_count++] = Treasure_Init(pos, closedTex, openedTex);
-        needed_dead_monster += 30;
+        needed_dead_monster += 60;
     }
 }
 

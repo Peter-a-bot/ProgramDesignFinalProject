@@ -4,6 +4,7 @@
 #include "treasure.h"
 #include <raylib.h>
 
+const int basic_map_health_up = 1000;
 float pre_game_time = 0.0f;
 float game_time = 0.0f;
 float next_spawn_time = 3.0f;
@@ -13,14 +14,14 @@ int active_monster_count = 0;
 Monster monsters[MAX_MONSTER_COUNT];
 
 // 初始化怪物位置
-void spawn_monsters(Hero *hero) {
+void spawn_monsters(Hero *hero,int map_type) {
     for (int i = 0; i < INITIAL_MONSTER_COUNT; i++) {
         Vector2 position = random_empty_position(hero);
         monsters[i].x= position.x;
         monsters[i].y = position.y;
         monsters[i].is_active = 1;  // 標記為活躍
         monsters[i].color = RED;    // 設置怪物為紅色
-        monsters[i].health = 300;    // 設置怪物為紅色
+        monsters[i].health = 300 + map_type*basic_map_health_up;   //設置血量，依地圖而變 
         monsters[i].width = 2;    // 設置怪物寬度2
         monsters[i].height = 2;    // 設置怪物為高度2
 
@@ -198,7 +199,7 @@ void move_monsters_towards_player(Hero *hero) {
 }
 
 // 新增多個怪物的函數
-void add_monsters(Hero *hero) {
+void add_monsters(Hero *hero,int map_type) {
     // 基於時間生成怪物
     game_time += GetFrameTime();
     
@@ -221,7 +222,7 @@ void add_monsters(Hero *hero) {
                 monsters[current_monster_count].color = RED;
                 monsters[current_monster_count].width = 2;
                 monsters[current_monster_count].height = 2;
-                monsters[current_monster_count].health = 300;
+                monsters[current_monster_count].health = 300 + map_type*basic_map_health_up;   //設置血量，依地圖而變 
 
                 //碰撞箱
                 monsters[i].box.rec.x=monsters[i].x;
@@ -241,7 +242,7 @@ void add_monsters(Hero *hero) {
 }
 
 // 檢查並替換消失的怪物
-void replace_missing_monsters(Hero *hero) {
+void replace_missing_monsters(Hero *hero,int map_type) {
     int missing_count = 0;
     
     // 計算已消失的怪物數量
@@ -263,7 +264,7 @@ void replace_missing_monsters(Hero *hero) {
                 monsters[i].x = position.x;
                 monsters[i].y = position.y;
                 monsters[i].is_active = 1;
-                monsters[i].health = 300;
+                monsters[i].health = 300 + map_type*basic_map_health_up;   //設置血量，依地圖而變 
 
                 //碰撞箱
                 monsters[i].box.rec.x=monsters[i].x;

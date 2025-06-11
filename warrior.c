@@ -12,7 +12,7 @@ Warrior* WarriorInit() {
     LoadTexture("resources/hero/warrior.png"),
     100.0f,                                         //角色攻擊力
     2.0f,                                           //角色速度
-    100.0f,                                         //角色血量
+    220.0f,                                         //角色血量
     0.1f,                                          //角色血量回復速度
     50.0f                                          //角色拾取範圍
     );

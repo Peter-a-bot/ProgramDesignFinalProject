@@ -26,6 +26,8 @@
 // 射擊機率(數值越小越容易射擊，範圍1-100)
 #define CHAIN_FIRE_CHANCE 80  
 
+extern int dead_chain_monster_count;
+
 typedef struct {
     // Texture2D texture;
     CollisionBox box;
@@ -63,7 +65,7 @@ void init_chain_monsters();
 void init_chain();
 
 void create_chain(int x, int y, int direction, Color color);//生成鎖鏈怪物的射擊物
-void spawn_chain_monster(Hero *hero);//生成鎖鏈怪物
+void spawn_chain_monster(Hero *hero,int map_type);//生成鎖鏈怪物
 void update_chain_monsters(Hero *hero);// 移動鎖鏈型怪物和處理射擊
 void create_explosion_with_radius(int x, int y, Color color, int radius);//創建指定半徑的爆炸(鎖鏈型怪物)
 bool check_player_in_explosion_radius(int explosion_x, int explosion_y, int radius,Hero *hero);// 檢查玩家是否在爆炸範圍內

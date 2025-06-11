@@ -13,6 +13,7 @@ double chain_monster_next_spawn_time = 3.0f;
 ChainMonster chain_monsters[MAX_CHAIN_MONSTERS];
 Explosion_Chain chain_explosions[MAX_CHAIN_EXPLOSIONS];  // 爆炸數組
 Chain chain[MAX_CHAIN_NUM];
+const int chain_heath_up = 1000;
 int current_chain_count = 0;  // 當前鎖鏈怪物數量
 
 int dead_chain_monster_count = 0; // 當前死亡的鎖鏈怪物數量
@@ -45,7 +46,7 @@ void init_chain() {
     }
 }
 
-void spawn_chain_monster(Hero *hero) {
+void spawn_chain_monster(Hero *hero,int map_type) {
     game_time += GetFrameTime();
     if (game_time >= chain_monster_next_spawn_time) {// 檢查是否需要生成射擊型怪物
         chain_monster_next_spawn_time += CHAIN_MONSTER_SPAWN_INTERVAL;
@@ -64,7 +65,7 @@ void spawn_chain_monster(Hero *hero) {
                     chain_monsters[i].cooldown = 30;   // 初始冷卻時間
                     chain_monsters[i].width=2;
                     chain_monsters[i].height=2;
-                    chain_monsters[i].health=800;
+                    chain_monsters[i].health = 800 + map_type*chain_heath_up;   //設置血量，依地圖而變 
                     current_chain_count++;
     
                     chain_monsters[i].box.rec.x=chain_monsters[i].x;

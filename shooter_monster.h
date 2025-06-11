@@ -23,6 +23,8 @@
 // 射擊機率(數值越小越容易射擊，範圍1-100)
 #define SHOOTER_FIRE_CHANCE 80  
 
+extern int dead_shooter_monster_count;
+
 typedef struct {
     // Texture2D texture;
     CollisionBox box;
@@ -49,7 +51,7 @@ void init_shooter_monsters();
 void init_projectiles();
 
 void create_projectile(int x, int y, int direction, Color color);//生成射擊怪物的射擊物
-void spawn_shooter_monster(Hero *hero);//生成射擊怪物
+void spawn_shooter_monster(Hero *hero,int map_type);//生成射擊怪物
 void update_shooter_monsters(Hero *hero);// 移動射擊型怪物和處理射擊
 void create_explosion_with_radius(int x, int y, Color color, int radius);//創建指定半徑的爆炸(射擊型怪物)
 bool check_player_in_explosion_radius(int explosion_x, int explosion_y, int radius,Hero *hero);// 檢查玩家是否在爆炸範圍內

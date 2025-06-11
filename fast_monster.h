@@ -47,10 +47,10 @@ extern float next_fast_spawn_time;     // 下次怪物生成時間
 //extern void create_explosion(int x, int y, Color c); // 創建爆炸效果
 
 // 怪物相關函數宣告
-void spawn_fast_monsters(Hero *hero);
+void spawn_fast_monsters(Hero *hero,int map_type);
 void move_fast_monsters_towards_player(Hero *hero);
-void add_fast_monsters(Hero *hero);
-void replace_missing_fast_monsters(Hero *hero);
+void add_fast_monsters(Hero *hero,int map_type);
+void replace_missing_fast_monsters(Hero *hero,int map_type);
 void draw_fast_monsters();
 void check_fast_monster_collision(Hero *hero);
 void get_fast_monster_demage(Hero* hero);

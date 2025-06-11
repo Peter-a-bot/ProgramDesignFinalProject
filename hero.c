@@ -80,7 +80,7 @@ void HeroDraw(Hero* self) {
 void HeroUpdate(Hero *self, double deltaTime) {
   // 【1】回血
     self->hp += self->hpRecoveryRate * deltaTime;
-    if (self->hp > self->maxHp) self->hp = self->maxHp; // 假設最大血量100
+    if (self->hp > self->maxHp) self->hp = self->maxHp; 
 
     // 【2】經驗值升級檢查
     if (self->exp >= self->nextLevelExp) {
@@ -133,7 +133,7 @@ double CheckDemage(CollisionBox* box, Hero *self) {
     damage += self->weapons[i]->checkDemage(self->weapons[i], box);
   }
 
-  damage += self->attackPower/2;
+  // damage += self->attackPower/2;
 
   return damage;
 }

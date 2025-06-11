@@ -22,6 +22,8 @@
 #include "map_system.h"
 #include "selectioninterface.h"
 
+#define GAME_TIME 120
+
 void DrawProgressBar(int x, int y, int width, int height, float progress, Color bgColor, Color fgColor);
 void DrawGameUI(float time, int currentHP, int maxHP, int currentXP, int maxXP);
 
@@ -118,8 +120,8 @@ int main() {
 
     //主遊戲部份
     // 怪物初始化
-    spawn_monsters(hero);
-    spawn_fast_monsters(hero);
+    spawn_monsters(hero,mapCode);
+    spawn_fast_monsters(hero,mapCode);
     init_shooter_monsters();
     init_projectiles();
 
@@ -153,7 +155,7 @@ int main() {
     
 
     //主遊戲循環
-    while(curTime < 150.0f && !isHeroDead && !isHeroWin) { //確認角色血量
+    while(curTime < GAME_TIME && !isHeroDead && !isHeroWin) { //確認角色血量
       if(hero->hp <= 0) {
         isHeroDead = 1;
       }
@@ -205,10 +207,10 @@ int main() {
       hero->move(hero);
 
       //新增敵人
-      add_monsters(hero);
-      add_fast_monsters(hero);
-      spawn_shooter_monster(hero);
-      spawn_chain_monster(hero);
+      add_monsters(hero,mapCode);
+      add_fast_monsters(hero,mapCode);
+      spawn_shooter_monster(hero,mapCode);
+      spawn_chain_monster(hero,mapCode);
 
       
       update_shooter_monsters(hero);
@@ -310,11 +312,11 @@ int main() {
       EndDrawing();
 
       //替換已有的敵人
-      replace_missing_monsters(hero);
-      replace_missing_fast_monsters(hero);
+      replace_missing_monsters(hero,mapCode);
+      replace_missing_fast_monsters(hero,mapCode);
     }
 
-    if(curTime >= 150.0f) {
+    if(curTime >= GAME_TIME) {
       isHeroWin = 1;
     }
 

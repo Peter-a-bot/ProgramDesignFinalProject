@@ -14,6 +14,7 @@ double shooter_monster_next_spawn_time = 3.0f;
 
 ShooterMonster shooter_monsters[MAX_SHOOTER_MONSTERS];
 Projectile projectiles[MAX_PROJECTILES];
+const int shooter_heath_up = 1000;
 int current_shooter_count = 0;  // 當前射擊怪物數量
 
 int dead_shooter_monster_count = 0; // 當前死亡的射擊怪物數量
@@ -72,7 +73,7 @@ void init_projectiles() {
 //     }
 // }
 
-void spawn_shooter_monster(Hero *hero) {
+void spawn_shooter_monster(Hero *hero,int map_type) {
     game_time += GetFrameTime();
     if (game_time >= shooter_monster_next_spawn_time) {// 檢查是否需要生成射擊型怪物
         shooter_monster_next_spawn_time += SHOTER_MONSTER_SPAWN_INTERVAL;
@@ -90,6 +91,7 @@ void spawn_shooter_monster(Hero *hero) {
                     shooter_monsters[i].width=2;
                     shooter_monsters[i].height=2;
                     shooter_monsters[i].health=300;
+                    shooter_monsters[i].health = 300 + map_type*shooter_heath_up;   //設置血量，依地圖而變 
                     current_shooter_count++;
     
                     shooter_monsters[i].box.rec.x=shooter_monsters[i].x;

@@ -4,7 +4,7 @@
 #include "weapon.h"
 #include "shockstaff.h"
 
-#define SHOCKSTAFF_OFFSET -0.0f
+#define SHOCKSTAFF_OFFSET -500.0f
 
 ShockStaff* ShockStaffInit() {
   ShockStaff* shockstaff = (ShockStaff*)malloc(sizeof(ShockStaff));
@@ -13,7 +13,7 @@ ShockStaff* ShockStaffInit() {
   Weapon* base = WeaponInition(
     weaponName,                                            //武器名稱
     LoadTexture("resources/weapon/energyball.png"),        //武器貼圖
-    10.0f,                                                  //攻擊力
+    30.0f,                                                  //攻擊力
     3.0f,                                                  //攻擊範圍
     20.0f,                                                 //攻擊速度
     5.0f,                                                  //冷卻時間
@@ -43,25 +43,25 @@ ShockStaff* ShockStaffInit() {
 
 void ShockStaffAttack(Weapon *self) {
   ShockStaff* shockstaff = (ShockStaff*)self;
-  // static double curCircleRange = 0.1f;
 
-  DrawTextureEx(shockstaff->base.texture, shockstaff->base.position,shockstaff->base.attackRange,shockstaff->base.attackRange, WHITE);
+  DrawTextureEx(shockstaff->base.texture, shockstaff->base.position,0.0f,shockstaff->base.attackRange, WHITE);
 
-  // curCircleRange += shockstaff->base.attackSpeed;
-
-  // if(curCircleRange >= shockstaff->base.attackRange) {
-  //   curCircleRange = 0.1f;
-  // }
 }
 
 void ShockStaffUpdate(Weapon *self, double deltaTime) {
   ShockStaff* shockstaff = (ShockStaff*)self;
 
+  //調整貼圖的位置
+  shockstaff->base.position.x += SHOCKSTAFF_OFFSET;
+  shockstaff->base.position.y += SHOCKSTAFF_OFFSET;
+
   //調整圓心位置
   shockstaff->circleCenter = (Vector2) {
-    shockstaff->base.position.x + shockstaff->base.texture.width/2.0f + SHOCKSTAFF_OFFSET,
-    shockstaff->base.position.y + shockstaff->base.texture.height/2.0f + SHOCKSTAFF_OFFSET,
+    shockstaff->base.position.x + shockstaff->base.texture.width/2.0f + 350.0f,
+    shockstaff->base.position.y + shockstaff->base.texture.height/2.0f + 350.0f,
   };
+
+  shockstaff->radius = shockstaff->base.texture.width * shockstaff->base.attackRange/2.2f;
 
   //武器冷卻時間計算
   if(shockstaff->base.curCooldownTime > 0.0f) {
@@ -101,7 +101,7 @@ double CheckShockStaffDemage(Weapon* self,struct CollisionBox* box) {
   ShockStaff* shockstaff = (ShockStaff*) self;
   double damage = 0.0f;
 
-  if(shockstaff->base.isAttack && CheckCollisionBoxAndCircle(*box, shockstaff->circleCenter, shockstaff->radius*shockstaff->base.attackRange)) {
+  if(shockstaff->base.isAttack && CheckCollisionBoxAndCircle(*box, shockstaff->circleCenter, shockstaff->radius)) {
     damage += shockstaff->base.attackPower;
   }
 

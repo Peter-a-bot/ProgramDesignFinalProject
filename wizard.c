@@ -12,7 +12,7 @@ Wizard* WizardInit() {
     LoadTexture("resources/hero/wizard.png"),            //角色貼圖
     140.0f,                                              //角色攻擊力
     1.3f,                                                //角色速度
-    60.0f,                                              //角色血量
+    180.0f,                                              //角色血量
     0.3f,                                                //角色血量回復速度
     80.0f                                                //拾取範圍
     );

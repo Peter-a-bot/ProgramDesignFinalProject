@@ -12,7 +12,7 @@ Archer* ArcherInit() {
     LoadTexture("resources/hero/archer.png"),            //角色貼圖
     30.0f,                                              //角色攻擊力
     3.0f,                                                //角色速度
-    40.0f,                                              //角色血量
+    150.0f,                                              //角色血量
     0.1f,                                                //角色血量回復速度
     40.0f                                                //拾取範圍
     );

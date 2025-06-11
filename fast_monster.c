@@ -13,6 +13,7 @@
 
 // 全局怪物陣列和相關變數
 Fast_Monster fast_monsters[MAX_FAST_MONSTER_COUNT];
+const int fast_health_up = 1000;
 int current_fast_monster_count = 0;
 int active_fast_monster_count = 0;
 int dead_fast_monster_count = 0;
@@ -24,7 +25,7 @@ int fast_dx[4] = {0, 0, 1, -1}; // x 軸方向變化
 int fast_dy[4] = {1, -1, 0, 0}; // y 軸方向變化
 
 // 初始化怪物位置
-void spawn_fast_monsters(Hero *hero) {
+void spawn_fast_monsters(Hero *hero,int map_type) {
     Node pos;
     for (int i = 0; i < INITIAL_FAST_MONSTER_COUNT; i++) {
         random_empty_position(hero);
@@ -36,7 +37,7 @@ void spawn_fast_monsters(Hero *hero) {
 
         // 固定為快速怪物的屬性
         fast_monsters[i].color = BLUE;    // 固定為藍色
-        fast_monsters[i].health = 50;    // 血量較少
+        fast_monsters[i].health = 80 + map_type*fast_health_up;   //設置血量，依地圖而變 
         fast_monsters[i].move_chance = 95; // 更高的移動機率 (接近每幀都移動)
         fast_monsters[i].speed_steps = 3; // 一次移動 3 格
 
@@ -805,7 +806,7 @@ void move_fast_monsters_towards_player(Hero *hero) {
 }
 
 // 新增多個怪物的函數
-void add_fast_monsters(Hero *hero) {
+void add_fast_monsters(Hero *hero,int map_type) {
     // 基於時間生成怪物
     game_fast_monster_time += GetFrameTime();
 
@@ -829,7 +830,7 @@ void add_fast_monsters(Hero *hero) {
 
                 // 固定為快速怪物的屬性
                 fast_monsters[current_fast_monster_count].color = BLUE;
-                fast_monsters[current_fast_monster_count].health = 150;
+                fast_monsters[i].health = 300 + map_type*fast_health_up;   //設置血量，依地圖而變 
                 fast_monsters[current_fast_monster_count].move_chance = 95;
                 fast_monsters[current_fast_monster_count].speed_steps = 5;
 
@@ -850,7 +851,7 @@ void add_fast_monsters(Hero *hero) {
 }
 
 // 檢查並替換消失的怪物
-void replace_missing_fast_monsters(Hero *hero) {
+void replace_missing_fast_monsters(Hero *hero,int map_type) {
     int missing_count = 0;
 
     // 計算已消失的怪物數量
@@ -876,7 +877,7 @@ void replace_missing_fast_monsters(Hero *hero) {
 
                 // 固定為快速怪物的屬性
                 fast_monsters[i].color = BLUE;
-                fast_monsters[i].health = 150;
+                fast_monsters[i].health = 150 + map_type*fast_health_up;   //設置血量，依地圖而變 
                 fast_monsters[i].move_chance = 95;
                 fast_monsters[i].speed_steps = 3;
 
